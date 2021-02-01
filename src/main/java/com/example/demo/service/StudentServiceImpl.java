@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Book;
+import com.example.demo.model.BookDO;
 import com.example.demo.model.Student;
 import com.example.demo.model.StudentDO;
 import com.example.demo.repository.StudentRepository;
@@ -32,5 +34,11 @@ public class StudentServiceImpl implements StudentService{
     public StudentDO addNewStudent(final StudentDO studentDO) {
         Student student = mapper.map(studentDO, Student.class);
         return mapper.map(repository.createStudent(student), StudentDO.class);
+    }
+
+    @Override
+    public BookDO addNewBookToStudent(long id, final BookDO bookDO) {
+        Book book = mapper.map(bookDO, Book.class);
+        return mapper.map(repository.addBookToStudent(id, book), BookDO.class);
     }
 }

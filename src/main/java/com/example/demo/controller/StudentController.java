@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.BookDO;
+import com.example.demo.model.BookDTO;
 import com.example.demo.model.Student;
 import com.example.demo.model.StudentDO;
 import com.example.demo.model.StudentDTO;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.OrderBy;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +46,15 @@ public class StudentController {
         System.out.println(studentDO);
         StudentDO responseBody = service.addNewStudent(studentDO);
         return ResponseEntity.ok(mapper.map(responseBody, StudentDTO.class));
+    }
+
+    @PostMapping("/{studentId}")
+    public ResponseEntity<BookDTO> addNewBookToStudent(
+            @PathVariable long studentId,
+            @RequestBody final BookDTO bookDTO) {
+        BookDO bookDO = mapper.map(bookDTO, BookDO.class);
+        BookDO responseBody = service.addNewBookToStudent(studentId, bookDO);
+        return ResponseEntity.ok(mapper.map(responseBody, BookDTO.class));
     }
 
 }

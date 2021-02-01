@@ -3,27 +3,51 @@ package com.example.demo.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
 
 @Entity
 @Table(name = "student")
 public class Student implements Serializable {
 
     @Id
+    @Column(
+            name = "id",
+            updatable = false
+    )
     @GeneratedValue
     private long id;
 
     private String name;
+
     @Transient
     private int age;
-    @Column(name = "birth_date")
+
+    @Column(
+            name = "birth_date",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private LocalDate birthDate;
+
     private String email;
+
+    @OneToMany(mappedBy = "student")
+    private Collection<Book> books;
+
+
+    public void addBook(final Book book) {
+        books.add(book);
+        book.setStudent(this);
+    }
 
 
     public Student() {
@@ -42,6 +66,14 @@ public class Student implements Serializable {
         this.name = name;
         this.birthDate = birthDate;
         this.email = email;
+    }
+
+    public Collection<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(final Collection<Book> books) {
+        this.books = books;
     }
 
 
